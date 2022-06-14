@@ -1,4 +1,5 @@
 import Foundation
+import Registry
 
 class VMStorageOCI {
   let baseURL = Config.tartCacheDir.appendingPathComponent("OCIs", isDirectory: true)

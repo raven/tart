@@ -1,6 +1,7 @@
 import ArgumentParser
 import Dispatch
 import SwiftUI
+import Registry
 
 struct Pull: AsyncParsableCommand {
   static var configuration = CommandConfiguration(abstract: "Pull a VM from a registry")

@@ -72,20 +72,20 @@ struct TokenResponse: Decodable {
   }
 }
 
-class Registry {
+public class Registry {
   private let httpClient = HTTPClient(eventLoopGroupProvider: .createNew)
   
   deinit {
     try! httpClient.syncShutdown()
   }
-  
-  let baseURL: URL
-  let namespace: String
+
+  public let baseURL: URL
+  public let namespace: String
   let credentialsProvider: CredentialsProvider
 
   var currentAuthToken: TokenResponse? = nil
 
-  init(urlComponents: URLComponents,
+  public init(urlComponents: URLComponents,
        namespace: String,
        credentialsProvider: CredentialsProvider = KeychainCredentialsProvider()
   ) throws {
@@ -94,7 +94,7 @@ class Registry {
     self.credentialsProvider = credentialsProvider
   }
 
-  convenience init(
+  public convenience init(
           host: String,
           namespace: String,
           credentialsProvider: CredentialsProvider = KeychainCredentialsProvider()
@@ -108,14 +108,14 @@ class Registry {
     try self.init(urlComponents: baseURLComponents, namespace: namespace, credentialsProvider: credentialsProvider)
   }
 
-  func ping() async throws {
+  public func ping() async throws {
     let response = try await endpointRequest(.GET, "/v2/")
     if response.status != .ok {
       throw RegistryError.UnexpectedHTTPStatusCode(when: "doing ping", code: response.status.code)
     }
   }
 
-  func pushManifest(reference: String, manifest: OCIManifest) async throws -> String {
+  public func pushManifest(reference: String, manifest: OCIManifest) async throws -> String {
     let manifestJSON = try JSONEncoder().encode(manifest)
 
     let response = try await endpointRequest(.PUT, "\(namespace)/manifests/\(reference)",

@@ -1,7 +1,9 @@
 import Foundation
 
-class KeychainCredentialsProvider: CredentialsProvider {
-    func retrieve(host: String) throws -> (String, String)? {
+public class KeychainCredentialsProvider: CredentialsProvider {
+    public init() {}
+  
+    public func retrieve(host: String) throws -> (String, String)? {
         let query: [String: Any] = [kSecClass as String: kSecClassInternetPassword,
                                     kSecAttrProtocol as String: kSecAttrProtocolHTTPS,
                                     kSecAttrServer as String: host,
@@ -33,7 +35,7 @@ class KeychainCredentialsProvider: CredentialsProvider {
         return (user, password)
     }
 
-    func store(host: String, user: String, password: String) throws {
+    public func store(host: String, user: String, password: String) throws {
         let attributes: [String: Any] = [kSecClass as String: kSecClassInternetPassword,
                                          kSecAttrAccount as String: user,
                                          kSecAttrProtocol as String: kSecAttrProtocolHTTPS,

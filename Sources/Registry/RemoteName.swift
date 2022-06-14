@@ -1,16 +1,16 @@
 import Foundation
 import Parsing
 
-struct Reference: Comparable, Hashable, CustomStringConvertible {
-  enum ReferenceType: Comparable {
+public struct Reference: Comparable, Hashable, CustomStringConvertible {
+  public enum ReferenceType: Comparable {
     case Tag
     case Digest
   }
 
-  let type: ReferenceType
-  let value: String
+  public let type: ReferenceType
+  public let value: String
 
-  var fullyQualified: String {
+  public var fullyQualified: String {
     get {
       switch type {
       case .Tag:
@@ -21,17 +21,17 @@ struct Reference: Comparable, Hashable, CustomStringConvertible {
     }
   }
 
-  init(tag: String) {
+  public init(tag: String) {
     type = .Tag
     value = tag
   }
 
-  init(digest: String) {
+  public init(digest: String) {
     type = .Digest
     value = digest
   }
 
-  static func <(lhs: Reference, rhs: Reference) -> Bool {
+  public static func <(lhs: Reference, rhs: Reference) -> Bool {
     if lhs.type != rhs.type {
       return lhs.type < rhs.type
     } else {
@@ -39,25 +39,25 @@ struct Reference: Comparable, Hashable, CustomStringConvertible {
     }
   }
 
-  var description: String {
+  public var description: String {
     get {
       fullyQualified
     }
   }
 }
 
-struct RemoteName: Comparable, Hashable, CustomStringConvertible {
-  var host: String
-  var namespace: String
-  var reference: Reference
+public struct RemoteName: Comparable, Hashable, CustomStringConvertible {
+  public var host: String
+  public var namespace: String
+  public var reference: Reference
 
-  init(host: String, namespace: String, reference: Reference) {
+  public init(host: String, namespace: String, reference: Reference) {
     self.host = host
     self.namespace = namespace
     self.reference = reference
   }
 
-  init(_ name: String) throws {
+  public init(_ name: String) throws {
     let csNormal = [
       UInt8(ascii: "a")...UInt8(ascii: "z"),
       UInt8(ascii: "A")...UInt8(ascii: "Z"),
@@ -105,7 +105,7 @@ struct RemoteName: Comparable, Hashable, CustomStringConvertible {
     reference = result.2 ?? Reference(tag: "latest")
   }
 
-  static func <(lhs: RemoteName, rhs: RemoteName) -> Bool {
+  public static func <(lhs: RemoteName, rhs: RemoteName) -> Bool {
     if lhs.host != rhs.host {
       return lhs.host < rhs.host
     } else if lhs.namespace != rhs.namespace {
@@ -115,7 +115,7 @@ struct RemoteName: Comparable, Hashable, CustomStringConvertible {
     }
   }
 
-  var description: String {
+  public var description: String {
     "\(host)/\(namespace)\(reference.fullyQualified)"
   }
 }

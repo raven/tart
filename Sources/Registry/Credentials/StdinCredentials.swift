@@ -5,8 +5,8 @@ enum StdinCredentialsError: Error {
   case CredentialTooLong(message: String)
 }
 
-class StdinCredentials {
-  static func retrieve() throws -> (String, String) {
+public class StdinCredentials {
+  public static func retrieve() throws -> (String, String) {
     let user = try readStdinCredential(name: "username", prompt: "User: ", isSensitive: false)
     let password = try readStdinCredential(name: "password", prompt: "Password: ", isSensitive: true)
 

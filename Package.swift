@@ -17,12 +17,15 @@ let package = Package(
   ],
   targets: [
     .executableTarget(name: "tart", dependencies: [
+      .target(name: "Registry"),
       .product(name: "ArgumentParser", package: "swift-argument-parser"),
-      .product(name: "AsyncHTTPClient", package: "async-http-client"),
       .product(name: "Dynamic", package: "Dynamic"),
+    ]),
+    .target(name: "Registry", dependencies: [
+      .product(name: "AsyncHTTPClient", package: "async-http-client"),
       .product(name: "Parsing", package: "swift-parsing"),
     ]),
-    .testTarget(name: "TartTests", dependencies: ["tart"])
+    .testTarget(name: "RegistryTests", dependencies: ["Registry"])
   ]
 )
 

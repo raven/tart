@@ -1,5 +1,6 @@
 import Foundation
 import Compression
+import Registry
 
 enum OCIError: Error {
   case ShouldBeExactlyOneLayer

@@ -1,4 +1,5 @@
 import Foundation
+import Registry
 
 class VMStorageHelper {
   static func open(_ name: String) throws -> VMDirectory {
