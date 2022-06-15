@@ -3,7 +3,7 @@ task:
     labels:
       name: Mac-Mini-Intel
   name: Test Registry
-  build_script: swift build --build-tests
+  build_script: swift build --target RegistryTests
   test_script: swift test --skip-build
 
 task:
