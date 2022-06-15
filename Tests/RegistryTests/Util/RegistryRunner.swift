@@ -1,5 +1,5 @@
 import Foundation
-@testable import tart
+@testable import Registry
 
 enum RegistryRunnerError: Error {
     case DockerFailed(exitCode: Int32)

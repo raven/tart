@@ -1,5 +1,5 @@
 import XCTest
-@testable import tart
+@testable import Registry
 
 final class TokenResponseTests: XCTestCase {
   func testBasic() throws {
