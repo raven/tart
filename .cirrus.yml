@@ -3,6 +3,8 @@ task:
   persistent_worker:
     labels:
       name: Mac-Mini-M1
+  env:
+    CIRRUS_WORKING_DIR: $HOME/$CIRRUS_REPO_FULL_NAME
   build_script: swift test
   test_script: swift test
 
