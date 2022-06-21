@@ -7,6 +7,17 @@ task:
   test_script: swift test
 
 task:
+  name: Integration Test on Ventura
+  persistent_worker:
+    labels:
+      name: Mac-Mini-M1
+  build_script: swift build --product tart
+  sign_script: codesign --sign - --entitlements Resources/tart.entitlements --force .build/debug/tart
+  test_script: tart list
+  env:
+    PATH: "$PATH:$(pwd)/.build/arm64-apple-macosx/debug"
+
+task:
   name: Build
   only_if: $CIRRUS_TAG == ''
   macos_instance:
