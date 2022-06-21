@@ -43,26 +43,8 @@ struct Run: AsyncParsableCommand {
         vncWrapper = VNCWrapper(virtualMachine: vm!.virtualMachine)
     }
 
-    let runTask = Task {
-      do {
-        try await vm!.run(recovery)
-
-        // wait for VM to be in a final state before exit
-        while !(vm?.inFinalState ?? false) {
-          try await Task.sleep(nanoseconds: 1_000_000)
-        }
-
-        Foundation.exit(0)
-      } catch {
-        if error.localizedDescription.contains("Failed to lock auxiliary storage.") {
-          print("Virtual machine \"\(name)\" is already running!")
-        } else {
-          print(error)
-        }
-
-        Foundation.exit(1)
-      }
-    }
+    async let vmFinalState = runVMAndWaitFinalState()
+    
     if let vncWrapper = vncWrapper {
       do {
         let (port, password) = try await vncWrapper.credentials()
@@ -79,10 +61,31 @@ struct Run: AsyncParsableCommand {
     }
 
     // wait for VM to get into a final state
-    try await runTask.value
+    await vmFinalState
 
     if let vncWrapper = vncWrapper {
       try vncWrapper.stop()
+    }
+  }
+
+  private func runVMAndWaitFinalState() async -> VZVirtualMachine.State {
+    do {
+      try await vm!.run(recovery)
+
+      // wait for VM to be in a final state before exit
+      while !(vm?.inFinalState ?? false) {
+        try await Task.sleep(nanoseconds: 1_000_000)
+      }
+
+      return vm!.virtualMachine.state
+    } catch {
+      if error.localizedDescription.contains("Failed to lock auxiliary storage.") {
+        print("Virtual machine \"\(name)\" is already running!")
+      } else {
+        print(error)
+      }
+
+      Foundation.exit(1)
     }
   }
 
