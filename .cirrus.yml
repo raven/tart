@@ -1,10 +1,20 @@
 task:
-  name: Test on Ventura
+  name: "Tests: unit"
   persistent_worker:
     labels:
       name: Mac-Mini-M1
   build_script: swift test
   test_script: swift test
+
+task:
+  name: "Tests: integration"
+  persistent_worker:
+    labels:
+      name: Mac-Mini-M1
+  test_script:
+    - cd integration-tests
+    - pip3 install -r requirements.txt
+    - python3 -m pytest --version
 
 task:
   name: Build
